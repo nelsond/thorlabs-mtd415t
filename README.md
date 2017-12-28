@@ -74,5 +74,6 @@ $ py.test --cov=thorlabs_mtd415t tests/
 - [Official documentation for Thorlabs MTD415](https://www.thorlabs.com/thorproduct.cfm?partnumber=MTD415T)
 - [PySerial documentation](https://pypi.python.org/pypi/pyserial)
 
---
+
+---
 Thorlabs is registered trademark of Thorlabs, Inc.
