@@ -1,4 +1,4 @@
-# Python library for Thorlabs MTD415 OEM temperature controller [![Build Status](https://travis-ci.org/nelsond/thorlabs-mtd415t.svg?branch=master)](https://travis-ci.org/nelsond/thorlabs-mtd415t)
+# Python library for Thorlabs MTD415 OEM temperature controller [![Build Status](https://travis-ci.org/nelsond/thorlabs-mtd415t.svg?branch=master)](https://travis-ci.org/nelsond/thorlabs-mtd415t) [![Build status](https://ci.appveyor.com/api/projects/status/lfc793mgjyngyt3y?svg=true)](https://ci.appveyor.com/project/nelsond/thorlabs-mtd415t)
 
 Simple wrapper for the Thorlabs MTD415T OEM temperature controller
 module.
