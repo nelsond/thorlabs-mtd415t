@@ -212,19 +212,99 @@ def test_it_queries_uid_property(mtd415t_device_with_mock_serial):
 
 
 # .error_flags
-def test_it_raises_exception_for_error_flags(mtd415t_device_with_mock_serial):
+def test_it_returns_error_flags(mtd415t_device_with_mock_serial):
     mtd415t, mock_serial = mtd415t_device_with_mock_serial
 
-    with raises(NotImplementedError):
-        mtd415t.error_flags
+    idx = random.randint(0, 15)
+    mock_serial.in_buffer.append(str(1 << idx))
+    expected_result = tuple(True if i == idx else False for i in range(16))
+
+    assert mtd415t.error_flags == expected_result
+
+
+def test_it_queries_error_flags(mtd415t_device_with_mock_serial):
+    mtd415t, mock_serial = mtd415t_device_with_mock_serial
+
+    mock_serial.in_buffer.append(str(1 << 2))
+    mtd415t.error_flags
+
+    assert mock_serial.out_buffer.pop() == b'E?\n'
 
 
 # .errors
-def test_it_raises_exception_for_errors(mtd415t_device_with_mock_serial):
+def test_it_returns_not_enabled_error(mtd415t_device_with_mock_serial):
     mtd415t, mock_serial = mtd415t_device_with_mock_serial
 
-    with raises(NotImplementedError):
-        mtd415t.errors
+    mock_serial.in_buffer.append(str(1 << 0))
+
+    assert mtd415t.errors == ('not enabled',)
+
+
+def test_it_returns_internal_temperature_too_high_error(
+        mtd415t_device_with_mock_serial):
+    mtd415t, mock_serial = mtd415t_device_with_mock_serial
+
+    mock_serial.in_buffer.append(str(1 << 1))
+
+    assert mtd415t.errors == ('internal temperature too high',)
+
+
+def test_it_returns_thermal_latch_up_error(mtd415t_device_with_mock_serial):
+    mtd415t, mock_serial = mtd415t_device_with_mock_serial
+
+    mock_serial.in_buffer.append(str(1 << 2))
+
+    assert mtd415t.errors == ('thermal latch-up',)
+
+
+def test_it_returns_cycling_time_too_small_error(
+        mtd415t_device_with_mock_serial):
+    mtd415t, mock_serial = mtd415t_device_with_mock_serial
+
+    mock_serial.in_buffer.append(str(1 << 3))
+
+    assert mtd415t.errors == ('cycling time too small',)
+
+
+def test_it_returns_no_sensor_error(mtd415t_device_with_mock_serial):
+    mtd415t, mock_serial = mtd415t_device_with_mock_serial
+
+    mock_serial.in_buffer.append(str(1 << 4))
+
+    assert mtd415t.errors == ('no sensor',)
+
+
+def test_it_returns_no_tec_error(mtd415t_device_with_mock_serial):
+    mtd415t, mock_serial = mtd415t_device_with_mock_serial
+
+    mock_serial.in_buffer.append(str(1 << 5))
+
+    assert mtd415t.errors == ('no tec',)
+
+
+def test_it_returns_tec_polarity_reversed_error(
+        mtd415t_device_with_mock_serial):
+    mtd415t, mock_serial = mtd415t_device_with_mock_serial
+
+    mock_serial.in_buffer.append(str(1 << 6))
+
+    assert mtd415t.errors == ('tec polarity reversed',)
+
+
+def test_it_returns_value_out_of_range_error(mtd415t_device_with_mock_serial):
+    mtd415t, mock_serial = mtd415t_device_with_mock_serial
+
+    mock_serial.in_buffer.append(str(1 << 13))
+
+    assert mtd415t.errors == ('value out of range',)
+
+
+def test_it_returns__error(mtd415t_device_with_mock_serial):
+    mtd415t, mock_serial = mtd415t_device_with_mock_serial
+
+    mock_serial.in_buffer.append(str(1 << 14))
+
+    assert mtd415t.errors == ('invalid command',)
 
 
 # .tec_current_limit
