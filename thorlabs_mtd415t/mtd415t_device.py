@@ -35,7 +35,7 @@ class MTD415TDevice(SerialDevice):
     """
 
     # error bits, see MTD415T datasheet, p. 18
-    ERRORS = {
+    _ERRORS = {
         0:  'not enabled',
         1:  'internal temperature too high',
         2:  'thermal latch-up',
@@ -132,14 +132,23 @@ class MTD415TDevice(SerialDevice):
 
     @property
     def error_flags(self):
-        """Error flags from the error register of the device"""
-        raise NotImplementedError(
-                'Error flags are not implemented yet.')
+        """Error flags from the error register of the device (tuple, LSB
+        first)"""
+        err = int(self.query('E').decode('ascii'))
+        return tuple(c == '1' for c in reversed('{:016b}'.format(err)))
 
     @property
     def errors(self):
-        """Errors from the error register of the device tuple"""
-        raise NotImplementedError('Errors are not implemented yet.')
+        """Errors from the error register of the device (tuple)"""
+        flags = self.error_flags
+        errors = []
+        for idx, err in self._ERRORS.items():
+            if flags[idx] is False:
+                continue
+
+            errors.append(err)
+
+        return tuple(errors)
 
     @property
     def tec_current_limit(self):
