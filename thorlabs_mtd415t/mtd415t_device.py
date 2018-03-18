@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This module provides the MTD415TDevice class.
 
@@ -49,7 +50,7 @@ class MTD415TDevice(SerialDevice):
 
     def __init__(self, port, auto_save=False, *args, **kwargs):
         self._auto_save = auto_save
-        super().__init__(port, baudrate=115200, **kwargs)
+        super(MTD415TDevice, self).__init__(port, baudrate=115200, **kwargs)
 
     def query(self, setting):
         """
@@ -66,7 +67,7 @@ class MTD415TDevice(SerialDevice):
             setting = setting.encode('ascii')
 
         cmd = setting + b'?'
-        return super().query(cmd)
+        return super(MTD415TDevice, self).query(cmd)
 
     def write(self, data, *args, **kwargs):
         """
@@ -78,7 +79,7 @@ class MTD415TDevice(SerialDevice):
         if type(data) == str:
             data = data.encode('ascii')
 
-        return super().write(data, *args, **kwargs)
+        return super(MTD415TDevice, self).write(data, *args, **kwargs)
 
     def set(self, setting, value):
         """
@@ -88,7 +89,8 @@ class MTD415TDevice(SerialDevice):
             setting (string): Setting name, generally single character
             value (int): Set value
         """
-        cmd = '{}{}'.format(setting, value).encode('ascii')
+        value = int(value)
+        cmd = '{}{:d}'.format(setting, value).encode('ascii')
         self.write(cmd)
 
         # ensure returned data is removed from the buffer
