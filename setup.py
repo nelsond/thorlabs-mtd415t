@@ -38,5 +38,11 @@ setup(
 
     packages=['thorlabs_mtd415t'],
 
+    entry_points={
+        'console_scripts': [
+            'mtd415t-tcp-proxy=thorlabs_mtd415t.tcp_proxy.cli:main'
+        ]
+    },
+
     install_requires=[],
 )
