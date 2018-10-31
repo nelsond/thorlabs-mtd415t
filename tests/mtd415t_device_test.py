@@ -45,6 +45,16 @@ def test_it_queries_setting(mtd415t_device_with_mock_serial):
     assert mock_serial.out_buffer.pop() == b'test?\n'
 
 
+def test_it_retries_query_for_unknown_command(mtd415t_device_with_mock_serial):
+    mtd415t, mock_serial = mtd415t_device_with_mock_serial
+
+    mock_serial.in_buffer.append('hello world')
+    mock_serial.in_buffer.append('unknown command\n')
+    result = mtd415t.query('test', retry=True)
+
+    assert result == b'hello world'
+
+
 # .close
 def test_it_closes_serial(mtd415t_device_with_mock_serial):
     mtd415t, mock_serial = mtd415t_device_with_mock_serial
