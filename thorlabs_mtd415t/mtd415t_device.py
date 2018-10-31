@@ -19,6 +19,8 @@ Nelson Darkwah Oppong, December 2017
 n@darkwahoppong.com
 """
 
+from time import sleep
+
 from .helpers import validate_is_float_or_int, validate_is_in_range
 from .serial_device import SerialDevice
 
@@ -52,12 +54,14 @@ class MTD415TDevice(SerialDevice):
         self._auto_save = auto_save
         super(MTD415TDevice, self).__init__(port, baudrate=115200, **kwargs)
 
-    def query(self, setting):
+    def query(self, setting, retry=False):
         """
         Retrieve setting
 
         Args:
             setting (string): Setting name, generally a single character
+            retry (boolean, optional): Retry failed query after 100ms,
+                                       False by default
 
         Returns:
             string: The setting value
@@ -67,7 +71,13 @@ class MTD415TDevice(SerialDevice):
             setting = setting.encode('ascii')
 
         cmd = setting + b'?'
-        return super(MTD415TDevice, self).query(cmd)
+        result = super(MTD415TDevice, self).query(cmd)
+
+        if retry is True and result == b'unknown command\n':
+            sleep(0.1)  # wait 100ms before retrying the same command
+            return self.query(setting, retry=True)
+        else:
+            return result
 
     def write(self, data, *args, **kwargs):
         """
@@ -125,18 +135,18 @@ class MTD415TDevice(SerialDevice):
     @property
     def idn(self):
         """Product name and version number (string)"""
-        return self.query('m').decode('ascii')
+        return self.query('m', True).decode('ascii')
 
     @property
     def uid(self):
         """Unique device identifier (string)"""
-        return self.query('u').decode('ascii')
+        return self.query('u', True).decode('ascii')
 
     @property
     def error_flags(self):
         """Error flags from the error register of the device (tuple, LSB
         first)"""
-        err = int(self.query('E').decode('ascii'))
+        err = int(self.query('E', True).decode('ascii'))
         return tuple(c == '1' for c in reversed('{:016b}'.format(err)))
 
     @property
@@ -155,7 +165,7 @@ class MTD415TDevice(SerialDevice):
     @property
     def tec_current_limit(self):
         """TEC current limit in A (float, >= 0.200 and <= 2.000)"""
-        value = self.query('L')
+        value = self.query('L', True)
         return float(value) / 1e3
 
     @tec_current_limit.setter
@@ -170,7 +180,7 @@ class MTD415TDevice(SerialDevice):
     @property
     def tec_current(self):
         """TEC current in A (float)"""
-        value = self.query('A')
+        value = self.query('A', True)
         return float(value) / 1e3
 
     @property
@@ -182,13 +192,13 @@ class MTD415TDevice(SerialDevice):
     @property
     def temp(self):
         """Current temperature in ° C (float)"""
-        value = self.query('Te')
+        value = self.query('Te', True)
         return float(value) / 1e3
 
     @property
     def temp_setpoint(self):
         """Temperature setpoint in ° C (float, >= 5.000 and <= 45.000)"""
-        value = self.query('T')
+        value = self.query('T', True)
         return float(value) / 1e3
 
     @temp_setpoint.setter
@@ -204,7 +214,7 @@ class MTD415TDevice(SerialDevice):
     def status_temp_window(self):
         """Temperature window for the status pin in K (float, >= 1e-3 and <=
         32.768)"""
-        value = self.query('W')
+        value = self.query('W', True)
         return float(value) / 1e3
 
     @status_temp_window.setter
@@ -220,7 +230,7 @@ class MTD415TDevice(SerialDevice):
     @property
     def status_delay(self):
         """Delay for changing the status pin in s (int, >=1 and <= 32768)"""
-        value = self.query(b'd')
+        value = self.query(b'd', True)
         return int(value)
 
     @status_delay.setter
@@ -235,7 +245,7 @@ class MTD415TDevice(SerialDevice):
     @property
     def critical_gain(self):
         """Critical gain in A/K (float, >=10e-3 and <= 100)"""
-        value = self.query('G')
+        value = self.query('G', True)
         return float(value) / 1e3
 
     @critical_gain.setter
@@ -250,7 +260,7 @@ class MTD415TDevice(SerialDevice):
     @property
     def critical_period(self):
         """Critical period in s (float, >=100e-3 and <= 100.000)"""
-        value = self.query('O')
+        value = self.query('O', True)
         return float(value) / 1e3
 
     @critical_period.setter
@@ -265,7 +275,7 @@ class MTD415TDevice(SerialDevice):
     @property
     def cycling_time(self):
         """Cycling time in s (float, >= 1e-3 and <= 1.000)"""
-        value = self.query('C')
+        value = self.query('C', True)
         return float(value) / 1e3
 
     @cycling_time.setter
@@ -280,7 +290,7 @@ class MTD415TDevice(SerialDevice):
     @property
     def p_gain(self):
         """Proportional gain in A/K (float, >=0 and <= 100.000)"""
-        value = self.query('P')
+        value = self.query('P', True)
         return float(value) / 1e3
 
     @p_gain.setter
@@ -295,7 +305,7 @@ class MTD415TDevice(SerialDevice):
     @property
     def i_gain(self,):
         """Integrator gain in A/(K x s) (float, >=0 and <= 100.000)"""
-        value = self.query('I')
+        value = self.query('I', True)
         return float(value) / 1e3
 
     @i_gain.setter
@@ -310,7 +320,7 @@ class MTD415TDevice(SerialDevice):
     @property
     def d_gain(self):
         """Differential gain in (A x s)/K (float, >=0 and <= 100.000)"""
-        value = self.query('D')
+        value = self.query('D', True)
         return float(value) / 1e3
 
     @d_gain.setter
