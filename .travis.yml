@@ -5,15 +5,11 @@ python:
 - "3.5"
 - "3.6"
 
-stages:
-- test_install
-- test
-
 script: python --version
 
 jobs:
   include:
-  - stage: test_install
+  - stage: test
     name: "Test pip installation"
     script:
     - "pip install ."
