@@ -9,6 +9,8 @@ stages:
 - test_install
 - test
 
+script: python --version
+
 jobs:
   include:
   - stage: test_install
