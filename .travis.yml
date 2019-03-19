@@ -1,20 +1,24 @@
 language: python
 python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
-  - "3.7"
+- "2.7"
+- "3.4"
+- "3.5"
+- "3.6"
+- "3.7"
+
+stages:
+- test_install
+- test
 
 jobs:
   include:
-    - stage: test
-      name: "Installation test"
-      script:
-        - "pip install ."
-        - "python -c 'from thorlabs_mtd415t import *; print(__version__)'"
+  - stage: test_install
+    name: "Installation test"
+    script:
+    - "pip install ."
+    - "python -c 'from thorlabs_mtd415t import *; print(__version__)'"
 
-    - stage: test
-      script:
-        - "pip install -r requirements/dev.txt"
-        - "pip install -e . && py.test -q --cov=thorlabs_mtd415t tests/"
+  - stage: test
+    script:
+    - "pip install -r requirements/dev.txt"
+    - "pip install -e . && py.test -q --cov=thorlabs_mtd415t tests/"
