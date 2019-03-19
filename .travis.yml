@@ -4,5 +4,18 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-install: "pip install -r requirements/dev.txt"
-script: "pip install -e . && py.test -q --cov=thorlabs_mtd415t tests/"
+  - "3.7"
+
+jobs:
+  include:
+    - stage: test
+      name: "Installation test"
+      script: ./unit-tests
+        - "pip install -e"
+        - "python -c 'from thorlabs_mtd415t import *; print(__version__)'"
+
+    - stage: test
+      name: "Unit tests"
+      script:
+        - "pip install -r requirements/dev.txt"
+        - "pip install -e . && py.test -q --cov=thorlabs_mtd415t tests/"
