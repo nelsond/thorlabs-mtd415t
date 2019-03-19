@@ -1,8 +1,13 @@
 language: python
 python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
-install: "pip install -r requirements/dev.txt"
-script: "pip install -e . && py.test -q --cov=thorlabs_mtd415t tests/"
+- "2.7"
+- "3.4"
+- "3.5"
+- "3.6"
+
+script:
+- "python --version"
+- "pip install ."
+- "python -c 'from thorlabs_mtd415t import *; print(__version__)'"
+- "pip install -r requirements/dev.txt"
+- "pip install -e . && py.test -q --cov=thorlabs_mtd415t tests/"
