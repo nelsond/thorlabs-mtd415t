@@ -11,7 +11,7 @@ jobs:
     - stage: test
       name: "Installation test"
       script:
-        - "pip install -e"
+        - "pip install ."
         - "python -c 'from thorlabs_mtd415t import *; print(__version__)'"
 
     - stage: test
