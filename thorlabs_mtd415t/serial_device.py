@@ -13,13 +13,14 @@ n@darkwahoppong.com
 
 """
 
-from serial import serial_for_url
 from time import time
 
 
 class SerialDevice(object):
     def __init__(self, port='/dev/ttyUSB0', baudrate=115200,
                  max_log_length=100, **kwargs):
+        from serial import serial_for_url
+
         self._serial = serial_for_url(port, baudrate=baudrate, **kwargs)
 
         self._log = []
