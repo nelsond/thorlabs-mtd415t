@@ -5,18 +5,9 @@ python:
 - "3.5"
 - "3.6"
 
-script: python --version
-
-jobs:
-  include:
-  - stage: test
-    name: "Test pip installation"
-    script:
-    - "pip install ."
-    - "python -c 'from thorlabs_mtd415t import *; print(__version__)'"
-
-  - stage: test
-    name: "Run unit tests"
-    script:
-    - "pip install -r requirements/dev.txt"
-    - "pip install -e . && py.test -q --cov=thorlabs_mtd415t tests/"
+script:
+- "python --version"
+- "pip install ."
+- "python -c 'from thorlabs_mtd415t import *; print(__version__)'"
+- "pip install -r requirements/dev.txt"
+- "pip install -e . && py.test -q --cov=thorlabs_mtd415t tests/"
