@@ -9,6 +9,9 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(current_path, 'README.md')) as f:
     long_description = f.read()
 
+with open(os.path.join(current_path, 'requirements', 'common.txt')) as f:
+    required = f.read().splitlines()
+
 setup(
     name='thorlabs-mtd415t',
 
@@ -38,5 +41,5 @@ setup(
 
     packages=['thorlabs_mtd415t'],
 
-    install_requires=[],
+    install_requires=required
 )
