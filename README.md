@@ -5,9 +5,8 @@ module.
 
 ## Requirements
 
-This module requires Python >= 3.4. Note that currently all tests also
-pass for Python 2.7. However, support for Python 2.7 may be dropped at
-any time.
+This module requires Python >= 3.5. It may also still work with Python 2.7 but 
+is not explicitely tested for that environment.
 
 * `pyserial` >= 3.4
 
