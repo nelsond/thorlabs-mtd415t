@@ -69,6 +69,9 @@ Generate coverage report
 ```shell
 $ py.test --cov=thorlabs_mtd415t tests/
 ```
+## License
+
+MIT License, see file `LICENSE`.
 
 ## Helpful links
 
