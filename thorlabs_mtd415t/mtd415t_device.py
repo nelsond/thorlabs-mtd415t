@@ -75,7 +75,7 @@ class MTD415TDevice(SerialDevice):
 
         if retry is True and result == b'unknown command\n':
             sleep(0.1)  # wait 100ms before retrying the same command
-            return self.query(setting, retry=True)
+            return self.query(setting, retry=False)
         else:
             return result
 
