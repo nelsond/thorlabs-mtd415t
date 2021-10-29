@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup
 import os
-from thorlabs_mtd415t import __version__
+from thorlabs_mtd415t.version import __version__
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 
