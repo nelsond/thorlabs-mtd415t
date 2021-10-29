@@ -135,12 +135,12 @@ class MTD415TDevice(SerialDevice):
     @property
     def idn(self):
         """Product name and version number (string)"""
-        return self.query('m', True).decode('ascii')
+        return self.query('m', True).decode('ascii').strip()
 
     @property
     def uid(self):
         """Unique device identifier (string)"""
-        return self.query('u', True).decode('ascii')
+        return self.query('u', True).decode('ascii').strip()
 
     @property
     def error_flags(self):

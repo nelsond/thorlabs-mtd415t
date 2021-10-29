@@ -70,7 +70,7 @@ def test_it_returns_log(mtd415t_device_with_mock_serial):
 
     mtd415t.write(b'Test')
 
-    assert len(mtd415t.log) is 1
+    assert len(mtd415t.log) == 1
 
 
 # .read
@@ -189,7 +189,7 @@ def test_it_does_not_set_auto_save_to_invalid_value(
 def test_it_returns_idn(mtd415t_device_with_mock_serial):
     mtd415t, mock_serial = mtd415t_device_with_mock_serial
 
-    mock_serial.in_buffer.append('XYZ')
+    mock_serial.in_buffer.append('XYZ\n')
 
     assert mtd415t.idn == 'XYZ'
 
@@ -197,7 +197,7 @@ def test_it_returns_idn(mtd415t_device_with_mock_serial):
 def test_it_queries_idn_property(mtd415t_device_with_mock_serial):
     mtd415t, mock_serial = mtd415t_device_with_mock_serial
 
-    mock_serial.in_buffer.append('XYZ')
+    mock_serial.in_buffer.append('XYZ\n')
     mtd415t.idn
 
     assert mock_serial.out_buffer.pop() == b'm?\n'
@@ -207,7 +207,7 @@ def test_it_queries_idn_property(mtd415t_device_with_mock_serial):
 def test_it_returns_uid(mtd415t_device_with_mock_serial):
     mtd415t, mock_serial = mtd415t_device_with_mock_serial
 
-    mock_serial.in_buffer.append('ABC')
+    mock_serial.in_buffer.append('ABC\n')
 
     assert mtd415t.uid == 'ABC'
 
