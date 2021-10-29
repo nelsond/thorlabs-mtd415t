@@ -1,4 +1,4 @@
-v 0.1.3 (unreleased)
+v 0.1.3
 	- [FEATURE] Add automatic retry to queries used for properties
 	- [FIX] Fix version import in setup.Python
 	- [FIX] Remove newline characater from MTD415TDevice.uid and MTD415TDevice.idn
