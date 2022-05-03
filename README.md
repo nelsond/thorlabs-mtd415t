@@ -15,7 +15,7 @@ is not explicitely tested for that environment.
 Install with pip
 
 ```shell
-$ pip install git+git://github.com/nelsond/thorlabs-mtd415t.git
+$ pip install git+https://github.com/nelsond/thorlabs-mtd415t.git
 ```
 
 ## Example usage
